@@ -28,11 +28,16 @@ export class TasksService {
     });
   }
 
-  updateTask(id: string, task: UpdateTaskDto) {
-    this.taskRepository.update({ id }, task);
-
+  async updateTask(id: string, task: UpdateTaskDto) {
+    await this.taskRepository.update({ id }, task);
+    const updatedTask = await this.taskRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
     return {
-      message: `Tarea Con ID ${id} ha sido actualizada`,
+      message: `Tarea con ID ${id} ha sido actualizada`,
+      object: updatedTask,
     };
   }
 
